@@ -1,11 +1,11 @@
 {
-  "name": "@stefanprobst/rehype-shiki",
+  "name": "@imhoff/rehype-shiki",
   "version": "2.2.0",
   "main": "src/index.js",
   "types": "src/index.d.ts",
   "type": "module",
-  "repository": "git@github.com:stefanprobst/rehype-shiki.git",
-  "author": "Stefan Probst <stefanprobst@kolabnow.com>",
+  "repository": "git@github.com:imhoffd/rehype-shiki.git",
+  "author": "Daniel Imhoff <dwieeb@gmail.com>",
   "license": "MIT",
   "files": [
     "src"

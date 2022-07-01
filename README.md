@@ -9,7 +9,7 @@ for customizing the renderer.
 ## How to install
 
 ```sh
-yarn add shiki @stefanprobst/rehype-shiki
+npm i shiki @imhoff/rehype-shiki
 ```
 
 ## How to use
@@ -20,7 +20,7 @@ To highlight code blocks in html, specify the code block language via
 `data-language` attribute on the `<code>` element:
 
 ```js
-import withShiki from '@stefanprobst/rehype-shiki'
+import withShiki from '@imhoff/rehype-shiki'
 import { toString } from 'hast-util-to-string'
 import fromHtml from 'rehype-parse'
 import toHtml from 'rehype-stringify'
@@ -54,7 +54,7 @@ When used in a `unified` pipeline coming from Markdown, specify the code block
 language via code block meta:
 
 ````js
-import withShiki from '@stefanprobst/rehype-shiki'
+import withShiki from '@imhoff/rehype-shiki'
 import { toString } from 'hast-util-to-string'
 import toHtml from 'rehype-stringify'
 import fromMarkdown from 'remark-parse'
