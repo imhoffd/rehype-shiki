@@ -78,7 +78,7 @@ function getLineOptionsDefault(node) {
   if (dataHighlight != null) {
     try {
       const lineNumbers = parseNumericRange(dataHighlight)
-      return lineNumbers.map((line) => {
+      return lineNumbers.map(line => {
         return { line, classes: ['highlighted'] }
       })
     } catch {
@@ -93,7 +93,7 @@ function getLineOptionsDefault(node) {
       const parsed = json5.parse(node.data.meta)
       if (parsed.highlight != null) {
         const lineNumbers = parseNumericRange(parsed.highlight)
-        return lineNumbers.map((line) => {
+        return lineNumbers.map(line => {
           return { line, classes: ['highlighted'] }
         })
       }

@@ -141,7 +141,7 @@ it('throws when code block has unknown language and ignoreUnknownLanguage is set
 
 it('shows error message for missing highlighter option', async () =>
   expect(
-    createProcessor({ highlighter: undefined }).then((processor) =>
+    createProcessor({ highlighter: undefined }).then(processor =>
       processor.process(fixtures.unknown),
     ),
   ).rejects.toThrow(

@@ -11,11 +11,10 @@
     "src"
   ],
   "scripts": {
-    "format": "prettier . -l --ignore-path .gitignore",
-    "format:fix": "npm run format --write",
-    "lint": "eslint . --ignore-path .gitignore",
-    "lint:fix": "npm run lint --fix",
-    "prepare": "simple-git-hooks",
+    "lint": "npm run eslint && npm run prettier -- --check",
+    "fmt": "npm run eslint -- --fix && npm run prettier -- --write",
+    "prettier": "prettier \"{src,test}/**/*.{js,ts}\"",
+    "eslint": "eslint src --ext .ts",
     "test": "cross-env NODE_OPTIONS='--experimental-vm-modules' jest",
     "validate": "npm run format && npm run lint && npm run test"
   },
@@ -33,53 +32,22 @@
     "unist-util-visit": "^4.0.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^13.1.0",
-    "@stefanprobst/commitlint-config": "^1.0.2",
-    "@stefanprobst/eslint-config-node": "^2.0.1",
-    "@stefanprobst/prettier-config": "^1.0.5",
-    "@typescript-eslint/eslint-plugin": "^4.29.1",
-    "@typescript-eslint/parser": "^4.29.1",
+    "@imhoff/eslint-config": "^2.0.0",
+    "@imhoff/prettier-config": "^1.2.0",
     "cross-env": "^7.0.3",
-    "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-import-resolver-typescript": "^2.4.0",
-    "eslint-plugin-import": "^2.24.0",
-    "eslint-plugin-jest": "^24.4.0",
-    "eslint-plugin-node": "^11.1.0",
+    "eslint": "^8.18.0",
     "jest": "^27.3.1",
-    "lint-staged": "^11.1.2",
-    "prettier": "^2.3.2",
+    "prettier": "^2.7.1",
     "rehype-parse": "^8.0.2",
     "rehype-stringify": "^9.0.1",
     "shiki": "^0.10.0",
-    "simple-git-hooks": "^2.5.1",
     "typescript": "^4.3.5"
   },
   "peerDependencies": {
     "shiki": "^0.10.0"
   },
-  "commitlint": {
-    "extends": [
-      "@stefanprobst/commitlint-config"
-    ]
-  },
+  "prettier": "@imhoff/prettier-config",
   "eslintConfig": {
-    "extends": [
-      "@stefanprobst/eslint-config-node"
-    ],
-    "ignorePatterns": "*.d.ts"
-  },
-  "lint-staged": {
-    "*.(js|ts)": [
-      "eslint --cache --fix",
-      "prettier --write"
-    ],
-    "*.(json|md)": "prettier --write"
-  },
-  "prettier": "@stefanprobst/prettier-config",
-  "simple-git-hooks": {
-    "commit-msg": "npx commitlint --edit",
-    "pre-commit": "npx lint-staged",
-    "pre-push": "npm run validate"
+    "extends": "@imhoff/eslint-config/recommended"
   }
 }
