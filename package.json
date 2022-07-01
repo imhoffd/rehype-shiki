@@ -12,16 +12,15 @@
   ],
   "scripts": {
     "format": "prettier . -l --ignore-path .gitignore",
-    "format:fix": "yarn format --write",
+    "format:fix": "npm run format --write",
     "lint": "eslint . --ignore-path .gitignore",
-    "lint:fix": "yarn lint --fix",
+    "lint:fix": "npm run lint --fix",
     "prepare": "simple-git-hooks",
     "test": "cross-env NODE_OPTIONS='--experimental-vm-modules' jest",
-    "validate": "yarn run format && yarn run lint && yarn run test"
+    "validate": "npm run format && npm run lint && npm run test"
   },
   "engines": {
-    "node": ">=14.17",
-    "yarn": "1.x"
+    "node": ">=14.17"
   },
   "dependencies": {
     "hast-util-to-string": "^2.0.0",
@@ -79,8 +78,8 @@
   },
   "prettier": "@stefanprobst/prettier-config",
   "simple-git-hooks": {
-    "commit-msg": "yarn commitlint --edit",
-    "pre-commit": "yarn lint-staged",
-    "pre-push": "yarn run validate"
+    "commit-msg": "npx commitlint --edit",
+    "pre-commit": "npx lint-staged",
+    "pre-push": "npm run validate"
   }
 }
