@@ -101,9 +101,9 @@ it('ignores code block without language', async () => {
   expect(String(vfile)).toMatchInlineSnapshot(`
     "<h1>Heading</h1>
     <p>Text</p>
-    <pre class=\\"shiki\\" style=\\"background-color: #2e3440ff\\"><code><span class=\\"line\\"><span style=\\"color: #d8dee9ff\\">
-        const hello = \\"World\\"
-      </span></span></code></pre>
+    <pre class=\\"shiki\\" style=\\"background-color: #2e3440ff\\"><code><span class=\\"line\\"><span style=\\"color: #d8dee9ff\\"></span></span>
+    <span class=\\"line\\"><span style=\\"color: #d8dee9ff\\">    const hello = \\"World\\"</span></span>
+    <span class=\\"line\\"><span style=\\"color: #d8dee9ff\\">  </span></span></code></pre>
     <p>More text</p>
     "
   `)
@@ -117,9 +117,9 @@ it('ignores code block with unknown language', async () => {
   expect(String(vfile)).toMatchInlineSnapshot(`
     "<h1>Heading</h1>
     <p>Text</p>
-    <pre class=\\"shiki\\" style=\\"background-color: #2e3440ff\\"><code><span class=\\"line\\"><span style=\\"color: #d8dee9ff\\">
-        const hello = \\"World\\"
-      </span></span></code></pre>
+    <pre class=\\"shiki\\" style=\\"background-color: #2e3440ff\\"><code><span class=\\"line\\"><span style=\\"color: #d8dee9ff\\"></span></span>
+    <span class=\\"line\\"><span style=\\"color: #d8dee9ff\\">    const hello = \\"World\\"</span></span>
+    <span class=\\"line\\"><span style=\\"color: #d8dee9ff\\">  </span></span></code></pre>
     <p>More text</p>
     "
   `)

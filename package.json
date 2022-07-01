@@ -24,8 +24,8 @@
   "dependencies": {
     "remark-parse": "^10.0.1",
     "remark-rehype": "^10.1.0",
-    "unified": "^10.1.0",
-    "unist-util-visit": "^4.0.0"
+    "unified": "^10.1.2",
+    "unist-util-visit": "^4.1.0"
   },
   "devDependencies": {
     "@imhoff/eslint-config": "^2.0.0",
@@ -33,16 +33,16 @@
     "cross-env": "^7.0.3",
     "eslint": "^8.18.0",
     "hast-util-to-string": "^2.0.0",
-    "jest": "^27.3.1",
+    "jest": "^28.1.2",
     "prettier": "^2.7.1",
-    "rehype-parse": "^8.0.2",
-    "rehype-stringify": "^9.0.1",
-    "shiki": "^0.10.0",
+    "rehype-parse": "^8.0.4",
+    "rehype-stringify": "^9.0.3",
+    "shiki": "^0.10.1",
     "shiki-renderer-hast": "^1.1.5",
-    "typescript": "^4.3.5"
+    "typescript": "^4.7.4"
   },
   "peerDependencies": {
-    "shiki": "^0.10.0"
+    "shiki": "^0.10.1"
   },
   "prettier": "@imhoff/prettier-config",
   "eslintConfig": {
