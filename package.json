@@ -29,7 +29,9 @@
     "node": ">=14.17"
   },
   "dependencies": {
+    "hast-util-to-string": "^2.0.0",
     "lodash": "^4.17.21",
+    "shiki-renderer-hast": "^1.1.5",
     "tslib": "^2.4.0",
     "unist-util-visit": "^4.1.0"
   },
@@ -37,16 +39,9 @@
     "@imhoff/eslint-config": "^2.0.0",
     "@imhoff/prettier-config": "^1.2.0",
     "@types/lodash": "^4.14.182",
-    "cross-env": "^7.0.3",
-    "eslint": "^8.18.0",
-    "hast-util-to-string": "^2.0.0",
+    "eslint": "^8.19.0",
     "prettier": "^2.7.1",
-    "rehype-parse": "^8.0.4",
-    "rehype-stringify": "^9.0.3",
-    "remark-parse": "^10.0.1",
-    "remark-rehype": "^10.1.0",
     "shiki": "^0.10.1",
-    "shiki-renderer-hast": "^1.1.5",
     "typescript": "^4.7.4",
     "unified": "^10.1.2"
   },
