@@ -4,6 +4,12 @@
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
   "repository": "git@github.com:imhoffd/rehype-shiki.git",
   "author": "Daniel Imhoff <dwieeb@gmail.com>",
   "license": "MIT",
@@ -16,6 +22,7 @@
     "prettier": "prettier \"{src,test}/**/*.{js,ts}\"",
     "eslint": "eslint src --ext .ts",
     "build": "tsc",
+    "watch": "npm run build -- --watch",
     "test": "jest",
     "validate": "npm run format && npm run lint && npm run test"
   },
@@ -23,12 +30,15 @@
     "node": ">=14.17"
   },
   "dependencies": {
+    "lodash": "^4.17.21",
+    "tslib": "^2.4.0",
     "unist-util-visit": "^4.1.0"
   },
   "devDependencies": {
     "@imhoff/eslint-config": "^2.0.0",
     "@imhoff/prettier-config": "^1.2.0",
     "@types/jest": "^28.1.4",
+    "@types/lodash": "^4.14.182",
     "cross-env": "^7.0.3",
     "eslint": "^8.18.0",
     "hast-util-to-string": "^2.0.0",
