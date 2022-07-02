@@ -68,15 +68,15 @@ export default function preNodeToShiki(
   for (const [i, n] of lineNodes.entries()) {
     const lineNumber = i + 1
     const diffSymbol = diffSymbols[i]
+    const dataLineNumber = String(lineNumber)
+    const lineNumberPadding =
+      String(lineNodes.length).length - String(lineNumber).length
+    const dataLineNumberPadding = repeat(lineNumberPadding, ' ') || null
 
     n.properties = {
       ...n.properties,
-      dataLineNumber: lineNumber,
-      dataLineNumberPadding:
-        repeat(
-          String(lineNodes.length).length - String(lineNumber).length,
-          ' ',
-        ) || null,
+      dataLineNumber,
+      dataLineNumberPadding,
       dataDiffSymbol: diffSymbol,
     }
   }
