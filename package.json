@@ -1,35 +1,34 @@
 {
   "name": "@imhoff/rehype-shiki",
   "version": "3.0.1",
-  "main": "src/index.js",
-  "types": "src/index.d.ts",
   "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": "git@github.com:imhoffd/rehype-shiki.git",
   "author": "Daniel Imhoff <dwieeb@gmail.com>",
   "license": "MIT",
   "files": [
-    "src"
+    "dist"
   ],
   "scripts": {
     "lint": "npm run eslint && npm run prettier -- --check",
     "fmt": "npm run eslint -- --fix && npm run prettier -- --write",
     "prettier": "prettier \"{src,test}/**/*.{js,ts}\"",
     "eslint": "eslint src --ext .ts",
-    "test": "cross-env NODE_OPTIONS='--experimental-vm-modules' jest",
+    "build": "tsc",
+    "test": "jest",
     "validate": "npm run format && npm run lint && npm run test"
   },
   "engines": {
     "node": ">=14.17"
   },
   "dependencies": {
-    "remark-parse": "^10.0.1",
-    "remark-rehype": "^10.1.0",
-    "unified": "^10.1.2",
     "unist-util-visit": "^4.1.0"
   },
   "devDependencies": {
     "@imhoff/eslint-config": "^2.0.0",
     "@imhoff/prettier-config": "^1.2.0",
+    "@types/jest": "^28.1.4",
     "cross-env": "^7.0.3",
     "eslint": "^8.18.0",
     "hast-util-to-string": "^2.0.0",
@@ -37,9 +36,13 @@
     "prettier": "^2.7.1",
     "rehype-parse": "^8.0.4",
     "rehype-stringify": "^9.0.3",
+    "remark-parse": "^10.0.1",
+    "remark-rehype": "^10.1.0",
     "shiki": "^0.10.1",
     "shiki-renderer-hast": "^1.1.5",
-    "typescript": "^4.7.4"
+    "ts-jest": "^28.0.5",
+    "typescript": "^4.7.4",
+    "unified": "^10.1.2"
   },
   "peerDependencies": {
     "shiki": "^0.10.1"
