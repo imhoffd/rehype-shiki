@@ -29,7 +29,7 @@ export default function preNodeToShiki(
   const inputText = inputNode.children[0].children[0]
   inputText.value = trimNewlines(inputText.value)
 
-  let symbols: string[] = []
+  let diffSymbols: string[] = []
   let lines = inputText.value.split('\n')
 
   const { lang, diff } = parseLanguage(
@@ -37,7 +37,7 @@ export default function preNodeToShiki(
   )
 
   if (diff) {
-    symbols = lines.map(line => line.substring(0, 1))
+    diffSymbols = lines.map(line => line.substring(0, 1))
     lines = lines.map(line => line.substring(1))
     inputText.value = lines.join('\n')
   }
@@ -67,7 +67,7 @@ export default function preNodeToShiki(
 
   for (const [i, n] of lineNodes.entries()) {
     const lineNumber = i + 1
-    const symbol = symbols[i]
+    const diffSymbol = diffSymbols[i]
 
     n.properties = {
       ...n.properties,
@@ -77,7 +77,7 @@ export default function preNodeToShiki(
           String(lineNodes.length).length - String(lineNumber).length,
           ' ',
         ) || null,
-      dataSymbol: symbol,
+      dataDiffSymbol: diffSymbol,
     }
   }
 

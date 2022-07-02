@@ -90,7 +90,7 @@ Append `-diff` to the language and then prepend `+`, `-`, or a space to each lin
 ```
 ````
 
-Diff symbols are added as `data-symbol` attributes to the final HTML.
+Diff symbols are added as `data-diff-symbol` attributes to the final HTML.
 
 ### Line Numbers
 
