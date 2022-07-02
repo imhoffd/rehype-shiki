@@ -9,7 +9,7 @@ export interface Options {
   renderer: (
     node: Hast.Element,
     lang?: StringLiteralUnion<Lang> | undefined,
-  ) => hast.Element
+  ) => Hast.Element
 }
 
 declare const withShiki: Plugin<[Options]>
