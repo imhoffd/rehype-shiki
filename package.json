@@ -23,7 +23,7 @@
     "eslint": "eslint src --ext .ts",
     "build": "tsc",
     "watch": "npm run build -- --watch",
-    "validate": "npm run format && npm run lint && npm run test"
+    "prepare": "npm run build"
   },
   "engines": {
     "node": ">=14.17"
