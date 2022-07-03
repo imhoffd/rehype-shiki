@@ -60,6 +60,7 @@ export default function preNodeToShiki(
 
   // set the highlighter language in a data attribute
   pre.properties.dataLanguage = lang
+  pre.properties.dataContentHash = meta.contentHash
 
   if (code.type !== 'element' || code.tagName !== 'code') {
     throw new Error(
