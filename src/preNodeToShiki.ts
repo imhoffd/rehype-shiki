@@ -15,6 +15,7 @@ const { parse } = json5
 
 export interface Meta {
   contentHash?: string
+  file?: string
 }
 
 export default function preNodeToShiki(
@@ -61,6 +62,7 @@ export default function preNodeToShiki(
   // set the highlighter language in a data attribute
   pre.properties.dataLanguage = lang
   pre.properties.dataContentHash = meta.contentHash
+  pre.properties.dataFile = meta.file
 
   if (code.type !== 'element' || code.tagName !== 'code') {
     throw new Error(
