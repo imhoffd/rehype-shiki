@@ -16,6 +16,7 @@ const { parse } = json5
 export interface Meta {
   contentHash?: string
   file?: string
+  lineNumberOffset?: number
 }
 
 export default function preNodeToShiki(
@@ -91,7 +92,7 @@ export default function preNodeToShiki(
   }
 
   for (const [i, n] of lineNodes.entries()) {
-    const lineNumber = i + 1
+    const lineNumber = i + 1 + (meta.lineNumberOffset ?? 0)
     const diffSymbol = diffSymbols[i]
     const dataLineNumber = String(lineNumber)
     const lineNumberPadding =
