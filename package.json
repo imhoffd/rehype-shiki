@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "hast-util-to-string": "^2.0.0",
+    "json5": "^2.2.1",
     "lodash": "^4.17.21",
     "shiki-renderer-hast": "^1.1.5",
     "tslib": "^2.4.0",
@@ -39,6 +40,7 @@
     "@imhoff/eslint-config": "^2.0.0",
     "@imhoff/prettier-config": "^1.2.0",
     "@types/lodash": "^4.14.182",
+    "@types/node": "^18.0.0",
     "eslint": "^8.19.0",
     "prettier": "^2.7.1",
     "shiki": "^0.10.1",

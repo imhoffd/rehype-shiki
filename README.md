@@ -97,3 +97,43 @@ Diff symbols are added as `data-diff-symbol` attributes to the final HTML.
 Line numbers are added as `data-line-number` attributes to the final HTML. An
 additional `data-line-number-padding` attribute is added for convenience when
 adding start or end padding.
+
+### Content Hashes
+
+Use this feature to throw an error during build when the content of a code
+block changes. This can be useful as a reminder to developers to update
+references (line or column numbers, variable names, etc) when changing a code
+block.
+
+As an example, lets say we start with the following markdown:
+
+````markdown
+Set the `hello` variable.
+
+```js { contentHash: 'b77a9f8b366ece64e434eb71c9e7f1f74e5a2fc2' }
+const hello = 'World';
+```
+````
+
+Then, someone changes the code block, renaming `hello` to `goodbye`:
+
+````markdown
+Set the `hello` variable.
+
+```js { contentHash: 'b77a9f8b366ece64e434eb71c9e7f1f74e5a2fc2' }
+const goodbye = 'World';
+```
+````
+
+The build will fail with a "Content hash mismatch" error, reminding the
+developer to update any references to the code block.
+
+After the references and content hash are changed, the build succeeds again:
+
+````markdown
+Set the `goodbye` variable.
+
+```js { contentHash: '0d69be72d350332263863e7352a99b363a806dd9' }
+const goodbye = 'World';
+```
+````
