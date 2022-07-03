@@ -11,6 +11,8 @@ import isSpanElement from './lib/isSpanElement.js'
 import trimNewlines from './lib/trimNewlines.js'
 import parseLanguage from './parseLanguage.js'
 
+const { parse } = json5
+
 export interface Meta {
   contentHash?: string
 }
@@ -37,9 +39,7 @@ export default function preNodeToShiki(
   inputText.value = trimNewlines(inputText.value)
 
   const meta: Meta =
-    typeof codeNode.data?.meta === 'string'
-      ? json5.parse(codeNode.data.meta)
-      : {}
+    typeof codeNode.data?.meta === 'string' ? parse(codeNode.data.meta) : {}
 
   let diffSymbols: string[] = []
   let lines = inputText.value.split('\n')
