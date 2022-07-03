@@ -1,6 +1,6 @@
 import type * as Hast from 'hast'
 import { toString } from 'hast-util-to-string'
-import { parse } from 'json5'
+import json5 from 'json5'
 import repeat from 'lodash/fp/repeat.js'
 import { createHash } from 'node:crypto'
 import type { Highlighter } from 'shiki'
@@ -37,7 +37,9 @@ export default function preNodeToShiki(
   inputText.value = trimNewlines(inputText.value)
 
   const meta: Meta =
-    typeof codeNode.data?.meta === 'string' ? parse(codeNode.data.meta) : {}
+    typeof codeNode.data?.meta === 'string'
+      ? json5.parse(codeNode.data.meta)
+      : {}
 
   let diffSymbols: string[] = []
   let lines = inputText.value.split('\n')
