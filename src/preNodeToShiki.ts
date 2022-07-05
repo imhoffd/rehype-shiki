@@ -26,6 +26,8 @@ export interface Meta {
   contentHash?: string
   file?: string
   lineNumberOffset?: number
+  contentBefore?: boolean
+  contentAfter?: boolean
 }
 
 export default function preNodeToShiki(
