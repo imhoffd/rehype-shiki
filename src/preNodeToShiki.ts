@@ -1,7 +1,7 @@
 import type * as Hast from 'hast'
 import { toString } from 'hast-util-to-string'
 import json5 from 'json5'
-import __ from 'lodash/fp/__'
+import __ from 'lodash/fp/__.js'
 import kebabCase from 'lodash/fp/kebabCase.js'
 import mapKeys from 'lodash/fp/mapKeys.js'
 import repeat from 'lodash/fp/repeat.js'
