@@ -60,7 +60,7 @@ export default function preNodeToShiki(
   const { lang, diff } = parseLanguage(getLanguageFromCodeNode(codeNode))
 
   if (diff) {
-    diffSymbols = lines.map(line => line.substring(0, 1))
+    diffSymbols = lines.map(line => line.substring(0, 1) || ' ')
     lines = lines.map(line => line.substring(1))
     inputText.value = lines.join('\n')
   }
