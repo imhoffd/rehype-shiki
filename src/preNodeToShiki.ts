@@ -1,6 +1,9 @@
 import type * as Hast from 'hast'
 import { toString } from 'hast-util-to-string'
 import json5 from 'json5'
+import __ from 'lodash/fp/__'
+import kebabCase from 'lodash/fp/kebabCase.js'
+import mapKeys from 'lodash/fp/mapKeys.js'
 import repeat from 'lodash/fp/repeat.js'
 import { createHash } from 'node:crypto'
 import type { Highlighter } from 'shiki'
@@ -12,6 +15,12 @@ import trimNewlines from './lib/trimNewlines.js'
 import parseLanguage from './parseLanguage.js'
 
 const { parse } = json5
+const repeatSpaces = repeat(__, ' ')
+const toDataKey = (key: string) => `data-${kebabCase(key)}`
+const mapDataKeys = mapKeys(toDataKey)
+
+const getLineNumberPadding = (lineCount: number, lineNumber: number): string =>
+  repeatSpaces(String(lineCount).length - String(lineNumber).length)
 
 export interface Meta {
   contentHash?: string
@@ -58,13 +67,6 @@ export default function preNodeToShiki(
 
   const [code] = pre.children
 
-  pre.properties ??= {}
-
-  // set the highlighter language in a data attribute
-  pre.properties.dataLanguage = lang
-  pre.properties.dataContentHash = meta.contentHash
-  pre.properties.dataFile = meta.file
-
   if (code.type !== 'element' || code.tagName !== 'code') {
     throw new Error(
       'Expected first child of rendered pre element to be a code element.',
@@ -91,18 +93,27 @@ export default function preNodeToShiki(
     }
   }
 
+  const properties = {
+    ...mapDataKeys(meta),
+    ['data-language']: lang,
+    ['data-line-number-padding']:
+      getLineNumberPadding(
+        lineNodes.length,
+        (meta.lineNumberOffset ?? 0) + 1,
+      ) || null,
+  }
+
+  pre.properties = { ...pre.properties, ...properties }
+
   for (const [i, n] of lineNodes.entries()) {
     const lineNumber = i + 1 + (meta.lineNumberOffset ?? 0)
     const diffSymbol = diffSymbols[i]
-    const dataLineNumber = String(lineNumber)
-    const lineNumberPadding =
-      String(lineNodes.length).length - String(lineNumber).length
-    const dataLineNumberPadding = repeat(lineNumberPadding, ' ') || null
 
     n.properties = {
       ...n.properties,
-      dataLineNumber,
-      dataLineNumberPadding,
+      ['data-line-number']: String(lineNumber),
+      ['data-line-number-padding']:
+        getLineNumberPadding(lineNodes.length, lineNumber) || null,
       dataDiffSymbol: diffSymbol,
     }
   }
