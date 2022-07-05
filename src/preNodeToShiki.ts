@@ -104,6 +104,7 @@ export default function preNodeToShiki(
   }
 
   pre.properties = { ...pre.properties, ...properties }
+  code.properties = { ...code.properties, ...properties }
 
   for (const [i, n] of lineNodes.entries()) {
     const lineNumber = i + 1 + (meta.lineNumberOffset ?? 0)
