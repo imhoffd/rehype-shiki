@@ -25,7 +25,7 @@ const getLineNumberPadding = (lineCount: number, lineNumber: number): string =>
 export interface Meta {
   contentHash?: string
   file?: string
-  lineNumberOffset?: number
+  lineNumbersOffset?: number
   contentBefore?: boolean
   contentAfter?: boolean
 }
@@ -101,7 +101,7 @@ export default function preNodeToShiki(
     ['data-line-number-padding']:
       getLineNumberPadding(
         lineNodes.length,
-        (meta.lineNumberOffset ?? 0) + 1,
+        (meta.lineNumbersOffset ?? 0) + 1,
       ) || null,
   }
 
@@ -109,7 +109,7 @@ export default function preNodeToShiki(
   code.properties = { ...code.properties, ...properties }
 
   for (const [i, n] of lineNodes.entries()) {
-    const lineNumber = i + 1 + (meta.lineNumberOffset ?? 0)
+    const lineNumber = i + 1 + (meta.lineNumbersOffset ?? 0)
     const diffSymbol = diffSymbols[i]
 
     n.properties = {
