@@ -3,6 +3,8 @@ import { toString } from 'hast-util-to-string'
 import json5 from 'json5'
 import type { Dictionary } from 'lodash'
 import __ from 'lodash/fp/__.js'
+import findLast from 'lodash/fp/findLast.js'
+import isFinite from 'lodash/fp/isFinite.js'
 import kebabCase from 'lodash/fp/kebabCase.js'
 import mapKeys from 'lodash/fp/mapKeys.js'
 import mapValues from 'lodash/fp/mapValues.js'
@@ -17,18 +19,34 @@ import trimNewlines from './lib/trimNewlines.js'
 import parseLanguage from './parseLanguage.js'
 
 const { parse } = json5
+const findLastFinite = findLast<number>(isFinite)
 const repeatSpaces = repeat(__, ' ')
 const toDataKey = (key: string) => `data-${kebabCase(key)}`
 const toDataValue = (value: unknown) => (value === true ? 'true' : value)
 const mapDataKeys = mapKeys(toDataKey)
 const mapDataValues = mapValues(toDataValue)
 
-const getLineNumberPadding = (lineCount: number, lineNumber: number): string =>
-  repeatSpaces(String(lineCount).length - String(lineNumber).length)
+const getLineNumberPadding = (
+  maxLineNumber: number,
+  lineNumber: string | null | undefined,
+): string | null => {
+  const maxLineNumberLength = maxLineNumber.toString().length
+  const padding = lineNumber
+    ? maxLineNumberLength - lineNumber.length
+    : maxLineNumberLength
+
+  return padding > 0 ? repeatSpaces(padding) : null
+}
+
+type DiffSymbol = ' ' | '-' | '+'
+
+const isDiffSymbol = (value: string): value is DiffSymbol =>
+  value === ' ' || value === '-' || value === '+'
 
 export interface Meta {
   contentHash?: string
   file?: string
+  lineNumbers?: boolean
   lineNumbersOffset?: number
   contentBefore?: boolean
   contentAfter?: boolean
@@ -58,15 +76,58 @@ export default function preNodeToShiki(
   const meta: Meta =
     typeof codeNode.data?.meta === 'string' ? parse(codeNode.data.meta) : {}
 
-  let diffSymbols: string[] = []
+  let diffSymbols: null | DiffSymbol[] = null
   let lines = inputText.value.split('\n')
+  let lineNumbers: null | (string | null)[] = null
+  let lineNumberPaddings: null | (string | null)[] = null
 
   const { lang, diff } = parseLanguage(getLanguageFromCodeNode(codeNode))
 
   if (diff) {
-    diffSymbols = lines.map(line => line.substring(0, 1) || ' ')
+    diffSymbols = lines.map((line, i) => {
+      const firstChar = line.substring(0, 1)
+
+      if (!firstChar) {
+        return ' '
+      }
+
+      if (!isDiffSymbol(firstChar)) {
+        throw new Error(
+          `First character ('${firstChar}') of line ${
+            i + 1
+          } is not a diff symbol. Use ' ', '-', or '+'.`,
+        )
+      }
+
+      return firstChar
+    })
+
     lines = lines.map(line => line.substring(1))
     inputText.value = lines.join('\n')
+  }
+
+  if (meta.lineNumbers) {
+    let currentLineNumber = meta.lineNumbersOffset ?? 1
+
+    lineNumbers = lines.map((_, i) =>
+      meta.lineNumbers
+        ? diffSymbols?.[i] === '+'
+          ? null
+          : (currentLineNumber++).toString()
+        : null,
+    )
+
+    const lineNumberIntegers = lineNumbers.map(lineNumber =>
+      lineNumber ? Number.parseInt(lineNumber) : null,
+    )
+
+    const maxLineNumber = lineNumbers
+      ? findLastFinite(lineNumberIntegers) ?? 1
+      : 1
+
+    lineNumberPaddings = lines.map((_, i) =>
+      getLineNumberPadding(maxLineNumber, lineNumbers?.[i]),
+    )
   }
 
   const pre = codeToHast(highlighter, toString(codeNode), lang)
@@ -102,25 +163,20 @@ export default function preNodeToShiki(
   const properties = {
     ...mapDataKeys(mapDataValues(meta as Dictionary<unknown>)),
     ['data-language']: lang,
-    ['data-line-number-padding']:
-      getLineNumberPadding(
-        lineNodes.length,
-        (meta.lineNumbersOffset ?? 0) + 1,
-      ) || null,
   }
 
   pre.properties = { ...pre.properties, ...properties }
   code.properties = { ...code.properties, ...properties }
 
   for (const [i, n] of lineNodes.entries()) {
-    const lineNumber = i + 1 + (meta.lineNumbersOffset ?? 0)
-    const diffSymbol = diffSymbols[i]
+    const diffSymbol = diffSymbols?.[i]
+    const lineNumber = lineNumbers?.[i]
+    const lineNumberPadding = lineNumberPaddings?.[i]
 
     n.properties = {
       ...n.properties,
-      ['data-line-number']: String(lineNumber),
-      ['data-line-number-padding']:
-        getLineNumberPadding(lineNodes.length, lineNumber) || null,
+      ['data-line-number']: lineNumber,
+      ['data-line-number-padding']: lineNumberPadding,
       dataDiffSymbol: diffSymbol,
     }
   }

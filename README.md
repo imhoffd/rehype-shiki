@@ -98,10 +98,11 @@ Line numbers are added as `data-line-number` attributes to the final HTML. An
 additional `data-line-number-padding` attribute is added for convenience when
 adding start or end padding.
 
-You can offset the line numbers by using `lineNumbersOffset`:
+To enable this feature, set `lineNumbers` to `true`. You can offset the line
+numbers by using `lineNumbersOffset`:
 
 ````markdown
-```js { lineNumbersOffset: 3 }
+```js { lineNumbers: true, lineNumbersOffset: 3 }
 // this will begin at line 4
 
 // create a variable
