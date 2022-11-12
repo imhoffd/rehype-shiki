@@ -105,7 +105,7 @@ You can offset the line numbers by using `lineNumbersOffset`:
 // this will begin at line 4
 
 // create a variable
-const hello = 'World';
+const hello = 'World'
 ```
 ````
 
@@ -122,7 +122,7 @@ As an example, lets say we start with the following markdown:
 Set the `hello` variable.
 
 ```js { contentHash: 'b77a9f8b366ece64e434eb71c9e7f1f74e5a2fc2' }
-const hello = 'World';
+const hello = 'World'
 ```
 ````
 
@@ -132,7 +132,7 @@ Then, someone changes the code block, renaming `hello` to `goodbye`:
 Set the `hello` variable.
 
 ```js { contentHash: 'b77a9f8b366ece64e434eb71c9e7f1f74e5a2fc2' }
-const goodbye = 'World';
+const goodbye = 'World'
 ```
 ````
 
@@ -145,6 +145,6 @@ After the references and content hash are changed, the build succeeds again:
 Set the `goodbye` variable.
 
 ```js { contentHash: '0d69be72d350332263863e7352a99b363a806dd9' }
-const goodbye = 'World';
+const goodbye = 'World'
 ```
 ````
