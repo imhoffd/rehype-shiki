@@ -1,9 +1,11 @@
 import type * as Hast from 'hast'
 import { toString } from 'hast-util-to-string'
 import json5 from 'json5'
+import type { Dictionary } from 'lodash'
 import __ from 'lodash/fp/__.js'
 import kebabCase from 'lodash/fp/kebabCase.js'
 import mapKeys from 'lodash/fp/mapKeys.js'
+import mapValues from 'lodash/fp/mapValues.js'
 import repeat from 'lodash/fp/repeat.js'
 import { createHash } from 'node:crypto'
 import type { Highlighter } from 'shiki'
@@ -17,7 +19,9 @@ import parseLanguage from './parseLanguage.js'
 const { parse } = json5
 const repeatSpaces = repeat(__, ' ')
 const toDataKey = (key: string) => `data-${kebabCase(key)}`
+const toDataValue = (value: unknown) => (value === true ? 'true' : value)
 const mapDataKeys = mapKeys(toDataKey)
+const mapDataValues = mapValues(toDataValue)
 
 const getLineNumberPadding = (lineCount: number, lineNumber: number): string =>
   repeatSpaces(String(lineCount).length - String(lineNumber).length)
@@ -96,7 +100,7 @@ export default function preNodeToShiki(
   }
 
   const properties = {
-    ...mapDataKeys(meta),
+    ...mapDataKeys(mapDataValues(meta as Dictionary<unknown>)),
     ['data-language']: lang,
     ['data-line-number-padding']:
       getLineNumberPadding(
