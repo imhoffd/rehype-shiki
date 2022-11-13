@@ -80,6 +80,8 @@ export default function preNodeToShiki(
   let lines = inputText.value.split('\n')
   let lineNumbers: null | (string | null)[] = null
   let lineNumberPaddings: null | (string | null)[] = null
+  let lineNumberIntegers: null | (number | null)[] = null
+  let maxLineNumber: null | number = null
 
   const { lang, diff } = parseLanguage(getLanguageFromCodeNode(codeNode))
 
@@ -117,17 +119,17 @@ export default function preNodeToShiki(
         : null,
     )
 
-    const lineNumberIntegers = lineNumbers.map(lineNumber =>
+    lineNumberIntegers = lineNumbers.map(lineNumber =>
       lineNumber ? Number.parseInt(lineNumber) : null,
     )
 
-    const maxLineNumber = lineNumbers
-      ? findLastFinite(lineNumberIntegers) ?? 1
-      : 1
+    const max = lineNumbers ? findLastFinite(lineNumberIntegers) ?? 1 : 1
 
     lineNumberPaddings = lines.map((_, i) =>
-      getLineNumberPadding(maxLineNumber, lineNumbers?.[i]),
+      getLineNumberPadding(max, lineNumbers?.[i]),
     )
+
+    maxLineNumber = max
   }
 
   const pre = codeToHast(highlighter, toString(codeNode), lang)
@@ -162,7 +164,10 @@ export default function preNodeToShiki(
 
   const properties = {
     ...mapDataKeys(mapDataValues(meta as Dictionary<unknown>)),
-    ['data-language']: lang,
+    'data-language': lang,
+    'data-line-number-padding': maxLineNumber
+      ? getLineNumberPadding(maxLineNumber, ' ')
+      : null,
   }
 
   pre.properties = { ...pre.properties, ...properties }
@@ -175,9 +180,9 @@ export default function preNodeToShiki(
 
     n.properties = {
       ...n.properties,
-      ['data-line-number']: lineNumber,
-      ['data-line-number-padding']: lineNumberPadding,
-      dataDiffSymbol: diffSymbol,
+      'data-line-number': lineNumber,
+      'data-line-number-padding': lineNumberPadding,
+      'data-diff-symbol': diffSymbol,
     }
   }
 
