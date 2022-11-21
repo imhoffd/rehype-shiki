@@ -6,6 +6,7 @@ import __ from 'lodash/fp/__.js'
 import findLast from 'lodash/fp/findLast.js'
 import isFinite from 'lodash/fp/isFinite.js'
 import kebabCase from 'lodash/fp/kebabCase.js'
+import last from 'lodash/fp/last.js'
 import mapKeys from 'lodash/fp/mapKeys.js'
 import mapValues from 'lodash/fp/mapValues.js'
 import repeat from 'lodash/fp/repeat.js'
@@ -14,6 +15,8 @@ import type { Highlighter } from 'shiki'
 import { codeToHast } from 'shiki-renderer-hast'
 
 import getLanguageFromCodeNode from './getLanguageFromCodeNode.js'
+import createSpanElement from './lib/createSpanElement.js'
+import createText from './lib/createText.js'
 import isSpanElement from './lib/isSpanElement.js'
 import trimNewlines from './lib/trimNewlines.js'
 import parseLanguage from './parseLanguage.js'
@@ -178,11 +181,47 @@ export default function preNodeToShiki(
     const lineNumber = lineNumbers?.[i]
     const lineNumberPadding = lineNumberPaddings?.[i]
 
-    n.properties = {
-      ...n.properties,
-      'data-line-number': lineNumber,
-      'data-line-number-padding': lineNumberPadding,
-      'data-diff-symbol': diffSymbol,
+    const lastChild = last(n.children)
+    const lastGrandchild = last(
+      lastChild?.type === 'element' ? lastChild.children : [],
+    )
+
+    if (
+      isSpanElement(lastChild) &&
+      lastGrandchild?.type === 'text' &&
+      lastGrandchild.value.endsWith('⋯')
+    ) {
+      n.properties = {
+        ...n.properties,
+        className: [
+          ...(n.properties && Array.isArray(n.properties.className)
+            ? [...n.properties.className, 'folded']
+            : ['folded']),
+        ],
+      }
+
+      const spaces = n.children
+        .flatMap(c => (c.type === 'element' ? c.children : [c]))
+        .map(c => (c.type === 'text' ? c.value.replace(/\S/g, '') : ''))
+        .join('')
+
+      n.children = [
+        createSpanElement({
+          children: [createText(repeatSpaces(spaces.length))],
+          properties: { className: ['spaces'] },
+        }),
+        createSpanElement({
+          children: [createText('⋯')],
+          properties: { className: ['marker'] },
+        }),
+      ]
+    } else {
+      n.properties = {
+        ...n.properties,
+        'data-line-number': lineNumber,
+        'data-line-number-padding': lineNumberPadding,
+        'data-diff-symbol': diffSymbol,
+      }
     }
   }
 

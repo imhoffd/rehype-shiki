@@ -1,7 +1,7 @@
 import type * as Hast from 'hast'
 
 export default function isSpanElement(
-  node: Hast.ElementContent,
+  node?: Hast.ElementContent,
 ): node is Hast.Element {
-  return node.type === 'element' && node.tagName === 'span'
+  return !!node && node.type === 'element' && node.tagName === 'span'
 }
