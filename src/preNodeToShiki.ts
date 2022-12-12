@@ -223,6 +223,8 @@ export default function preNodeToShiki(
         'data-diff-symbol': diffSymbol,
       }
     }
+
+    n.children.push(createText('\n'))
   }
 
   code.children = lineNodes
